@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `departamento` (
 INSERT INTO `departamento` (`id`, `nome`) VALUES
 	(1, 'Informática'),
 	(2, 'Mecânica'),
-	(3, 'Informática'),
+	(3, 'Física'),
 	(4, 'Administração'),
 	(5, 'Alimentos'),
 	(6, 'Mecatronica'),
