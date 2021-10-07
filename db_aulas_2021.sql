@@ -47,7 +47,8 @@ INSERT INTO `curso` (`id`, `nome`, `departamento_id`) VALUES
 	(4, 'Téc. em Mecânica', 2),
 	(5, 'Téc. em Alimentos', 5),
 	(6, 'Ciência da Computação', 1),
-	(7, 'Téc. em Moda', 7);
+	(7, 'Téc. em Moda', 7),
+	(8, 'Téc. em Mecatrônica', null);
 /*!40000 ALTER TABLE `curso` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela db_aula_2021.departamento
