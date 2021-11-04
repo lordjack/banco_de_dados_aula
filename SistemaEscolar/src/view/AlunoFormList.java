@@ -1,10 +1,12 @@
 package view;
 
 import controller.AlunoController;
+import model.Aluno;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class AlunoFormList {
     private JPanel panelMain;
@@ -19,11 +21,27 @@ public class AlunoFormList {
         salvarBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try {
 
-                AlunoController alunoController = new AlunoController();
-                alunoController.testarConexao();
+                    Aluno aluno = new Aluno();
 
-                System.out.println("Cliquei no botão");
+                    aluno.setNome(nomeTxt.getText());
+                    aluno.setDt_nascimento(dt_nascimentoTxt.getText());
+                    aluno.setMatricula(matriculaTxt.getText());
+
+                    nomeTxt.setText("");
+                    dt_nascimentoTxt.setText("");
+                    matriculaTxt.setText("");
+
+                    AlunoController alunoController = new AlunoController();
+
+                    alunoController.salvar(aluno);
+                    System.out.println("Registro inserido com sucesso!");
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+
             }
         });
     }
