@@ -2,10 +2,12 @@ package view;
 
 import controller.AlunoController;
 import model.Aluno;
+import net.proteanit.sql.DbUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AlunoFormList {
@@ -15,6 +17,10 @@ public class AlunoFormList {
     private JTextField nomeTxt;
     private JTextField dt_nascimentoTxt;
     private JTextField matriculaTxt;
+    private JButton listarBt;
+    private JTable alunoTb;
+    private JPanel panalTb;
+    private JPanel panelBtn;
 
 
     public AlunoFormList() {
@@ -38,12 +44,36 @@ public class AlunoFormList {
                     alunoController.salvar(aluno);
                     System.out.println("Registro inserido com sucesso!");
 
+                    listar();
+
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
 
             }
         });
+        listarBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listar();
+
+            }
+        });
+    }
+
+    public void listar() {
+        AlunoController alunoController = new AlunoController();
+        ResultSet rs = alunoController.listar();
+
+        alunoTb.setModel(DbUtils.resultSetToTableModel(rs));
+        //alunoTb.setTableHeader(null);
+        setNomeColuna(new String[]{"ID", "Matricula", "Nome", "Data Nascimento"});
+    }
+
+    public void setNomeColuna(String[] colunas) {
+        for (int i = 0; i < colunas.length; i++) {
+            alunoTb.getColumnModel().getColumn(i).setHeaderValue(colunas[i]);
+        }
     }
 
     public static void main(String[] args) {

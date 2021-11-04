@@ -4,6 +4,7 @@ import database.Conexao;
 import model.Aluno;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AlunoController {
@@ -31,6 +32,19 @@ public class AlunoController {
             stmt.execute();
             stmt.close();
 
+        } catch (SQLException ex) {
+            throw new RuntimeException();
+        }
+    }
+
+    public ResultSet listar() {
+        String sql;
+        try {
+            sql = "SELECT * FROM aluno";
+            PreparedStatement stmt = this.bd.getConexao().prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            return rs;
         } catch (SQLException ex) {
             throw new RuntimeException();
         }
