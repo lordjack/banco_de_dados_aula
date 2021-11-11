@@ -24,6 +24,7 @@ public class AlunoFormList {
     private JPanel panalTb;
     private JPanel panelBtn;
     private JTextField idTxt;
+    private JButton deletarBtn;
 
 
     public AlunoFormList() {
@@ -88,8 +89,32 @@ public class AlunoFormList {
                 salvarBtn.setText("Salvar");
             }
         });
+        deletarBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int i = JOptionPane.showConfirmDialog(null, "Deseja confirmar a remoção do registro?");
+
+                if (i == JOptionPane.YES_OPTION && !idTxt.getText().isEmpty()) {
+                    try {
+
+                        AlunoController alunoController = new AlunoController();
+
+                        int id = Integer.parseInt(alunoTb.getValueAt(alunoTb.getSelectedRow(), 0).toString());
+
+                        alunoController.deletar(id);
+                        listar();
+
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Selecione um registro pra ser deletado!");
+                }
+            }
+        });
     }
-    public void limpar(){
+
+    public void limpar() {
         idTxt.setText("");
         nomeTxt.setText("");
         dt_nascimentoTxt.setText("");

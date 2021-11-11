@@ -68,4 +68,20 @@ public class AlunoController {
             throw new RuntimeException();
         }
     }
+
+    public void deletar(int id) throws SQLException {
+        String sql;
+        try {
+            sql = "DELETE FROM aluno WHERE id = ?";
+            PreparedStatement stmt = this.bd.getConexao().prepareStatement(sql);
+
+            stmt.setInt(1, id);
+
+            stmt.execute();
+            stmt.close();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException();
+        }
+    }
 }
