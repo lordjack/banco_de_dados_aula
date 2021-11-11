@@ -84,4 +84,26 @@ public class AlunoController {
             throw new RuntimeException();
         }
     }
+
+    public ResultSet buscar(Aluno aluno) throws SQLException {
+        String sql = "";
+        try {
+            if (!aluno.getNome().isEmpty()) {
+                sql = "SELECT * FROM aluno WHERE nome LIKE '%" + aluno.getNome() + "%'";
+
+            } else if (!aluno.getMatricula().isEmpty()) {
+                sql = "SELECT * FROM aluno WHERE matricula LIKE '%" + aluno.getMatricula() + "%'";
+
+            } else if (!aluno.getDt_nascimento().isEmpty()) {
+                sql = "SELECT * FROM aluno WHERE dt_nascimento LIKE '%" + aluno.getDt_nascimento() + "%'";
+            }
+
+            PreparedStatement stmt = this.bd.getConexao().prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            return rs;
+        } catch (SQLException ex) {
+            throw new RuntimeException();
+        }
+    }
 }

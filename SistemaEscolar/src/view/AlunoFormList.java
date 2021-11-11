@@ -19,7 +19,7 @@ public class AlunoFormList {
     private JTextField nomeTxt;
     private JTextField dt_nascimentoTxt;
     private JTextField matriculaTxt;
-    private JButton listarBt;
+    private JButton buscarBtn;
     private JTable alunoTb;
     private JPanel panalTb;
     private JPanel panelBtn;
@@ -62,11 +62,35 @@ public class AlunoFormList {
 
             }
         });
-        listarBt.addActionListener(new ActionListener() {
+        buscarBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listar();
+                try {
 
+                    if (!nomeTxt.getText().isEmpty()
+                            || !matriculaTxt.getText().isEmpty()
+                            || !dt_nascimentoTxt.getText().isEmpty()) {
+
+                        AlunoController alunoController = new AlunoController();
+                        Aluno aluno = new Aluno();
+
+                        aluno.setNome(nomeTxt.getText());
+                        aluno.setDt_nascimento(dt_nascimentoTxt.getText());
+                        aluno.setMatricula(matriculaTxt.getText());
+
+                        ResultSet rs = alunoController.buscar(aluno);
+
+                        alunoTb.setModel(DbUtils.resultSetToTableModel(rs));
+
+                        setNomeColuna(new String[]{"ID", "Matricula", "Nome", "Data Nascimento"});
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Informe algum registro no formulário!");
+
+                    }
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
         alunoTb.addMouseListener(new MouseAdapter() {
@@ -86,6 +110,7 @@ public class AlunoFormList {
             @Override
             public void actionPerformed(ActionEvent e) {
                 limpar();
+                listar();
                 salvarBtn.setText("Salvar");
             }
         });
