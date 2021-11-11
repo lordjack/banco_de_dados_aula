@@ -49,4 +49,23 @@ public class AlunoController {
             throw new RuntimeException();
         }
     }
+
+    public void atualizar(Aluno aluno) throws SQLException {
+        String sql;
+        try {
+            sql = "UPDATE aluno SET nome = ?, matricula = ?, dt_nascimento = ? WHERE id = ?";
+            PreparedStatement stmt = this.bd.getConexao().prepareStatement(sql);
+
+            stmt.setInt(4, aluno.getId());
+            stmt.setString(1, aluno.getNome());
+            stmt.setString(2, aluno.getMatricula());
+            stmt.setString(3, aluno.getDt_nascimento());
+
+            stmt.execute();
+            stmt.close();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException();
+        }
+    }
 }

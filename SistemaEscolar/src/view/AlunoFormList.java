@@ -7,6 +7,8 @@ import net.proteanit.sql.DbUtils;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -21,30 +23,37 @@ public class AlunoFormList {
     private JTable alunoTb;
     private JPanel panalTb;
     private JPanel panelBtn;
+    private JTextField idTxt;
 
 
     public AlunoFormList() {
+
+        listar();
+
         salvarBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
 
+                    AlunoController alunoController = new AlunoController();
                     Aluno aluno = new Aluno();
 
                     aluno.setNome(nomeTxt.getText());
                     aluno.setDt_nascimento(dt_nascimentoTxt.getText());
                     aluno.setMatricula(matriculaTxt.getText());
 
-                    nomeTxt.setText("");
-                    dt_nascimentoTxt.setText("");
-                    matriculaTxt.setText("");
+                    if (idTxt.getText().isEmpty()) {
+                        alunoController.salvar(aluno);
 
-                    AlunoController alunoController = new AlunoController();
+                    } else {
+                        aluno.setId(Integer.parseInt(idTxt.getText()));
+                        alunoController.atualizar(aluno);
+                    }
 
-                    alunoController.salvar(aluno);
                     System.out.println("Registro inserido com sucesso!");
-
+                    limpar();
                     listar();
+                    salvarBtn.setText("Salvar");
 
                 } catch (SQLException ex) {
                     ex.printStackTrace();
@@ -59,6 +68,32 @@ public class AlunoFormList {
 
             }
         });
+        alunoTb.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                idTxt.setText(alunoTb.getValueAt(alunoTb.getSelectedRow(), 0).toString());
+                matriculaTxt.setText(alunoTb.getValueAt(alunoTb.getSelectedRow(), 1).toString());
+                nomeTxt.setText(alunoTb.getValueAt(alunoTb.getSelectedRow(), 2).toString());
+                dt_nascimentoTxt.setText(alunoTb.getValueAt(alunoTb.getSelectedRow(), 3).toString());
+
+                salvarBtn.setText("Editar");
+            }
+        });
+        cancelarBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                limpar();
+                salvarBtn.setText("Salvar");
+            }
+        });
+    }
+    public void limpar(){
+        idTxt.setText("");
+        nomeTxt.setText("");
+        dt_nascimentoTxt.setText("");
+        matriculaTxt.setText("");
     }
 
     public void listar() {
